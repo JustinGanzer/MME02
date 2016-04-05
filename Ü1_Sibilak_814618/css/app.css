@@ -1,0 +1,36 @@
+/**
+ * Created by Justin on 05-Apr-16.
+ */
+header {
+    background: #f5ff91;
+}
+main {
+    padding: 50px;
+    margin: 50px;
+    background: #ffed91;
+    max-width: 50%;
+    float: left;
+    display: block;
+    align-content: center;
+}
+
+
+
+.container {
+
+}
+
+aside{
+    background: #ffce00;
+    min-height: 500px;
+    padding: 50px;
+    margin: 50px;
+    float: left;
+    text-align: center;
+    font-size: larger;
+}
+
+footer {
+    clear: both;
+    background: #ff9f00;
+}
