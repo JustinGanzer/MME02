@@ -22,19 +22,36 @@ function initialize(){
 	var controller = document.getElementsByClassName("controller");
 
 	//iteriere über alle Controller
-	for(var i = 0; i < controller.length; i++){
+	for (var i = 0; i < controller.length; i++){
 
 		//hole das zum Controller zugehörige Video und merke es
-		controller[i].video = controller[i].parentElement.children[0]
+		controller[i].children[0].video = controller[i].parentElement.children[0];
+        
+        controller[i].children[1].video = controller[i].parentElement.children[0];
 
-		//EventListener hinzufügen
-		controller[i].addEventListener("click", function(){
+		//EventListener hinzufügen für Play/Pause
+		controller[i].children[0].addEventListener("click", function(){
 
 			//Überpüfe, ob pausiert oder nicht und spiele ab/pausiere
-			if(this.video.paused)
+			if(this.video.paused){
 				this.video.play();
-			else
+            this.innerHTML = "pause";}
+			else{
 				this.video.pause();
+            this.innerHTML = "play_arrow";}
+		});
+        
+        //EventListener hinzufügen für Stop
+		controller[i].children[1].addEventListener("click", function(){
+            stopVideo(this.video);
+            this.parentElement.children[0].innerHTML = "play_arrow";
 		});
 	}
+}
+
+//Stopt das Video
+//@param video - das Video welches gestoppt werden soll
+function stopVideo(video){
+    video.pause();
+    video.currentTime = 0;
 }
