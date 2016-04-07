@@ -25,9 +25,14 @@ function initialize(){
 	for (var i = 0; i < controller.length; i++){
 
 		//hole das zum Controller zugehörige Video und merke es
-		controller[i].children[0].video = controller[i].parentElement.children[0];
-        
-        controller[i].children[1].video = controller[i].parentElement.children[0];
+		var video = controller[i].parentElement.children[0];
+		controller[i].children[0].video = video;
+        controller[i].children[1].video = video;
+
+        video.onended = function(){
+        	console.log("video ended");
+        	this.parentElement.children[1].children[0].innerHTML="play_arrow";
+        }
 
 		//EventListener hinzufügen für Play/Pause
 		controller[i].children[0].addEventListener("click", function(){
@@ -35,10 +40,14 @@ function initialize(){
 			//Überpüfe, ob pausiert oder nicht und spiele ab/pausiere
 			if(this.video.paused){
 				this.video.play();
-            this.innerHTML = "pause";}
+           		this.innerHTML = "pause";
+           		console.log("video played");
+           	}
 			else{
 				this.video.pause();
-            this.innerHTML = "play_arrow";}
+            	this.innerHTML = "play_arrow";
+            	console.log("video paused");
+            }
 		});
         
         //EventListener hinzufügen für Stop
@@ -54,4 +63,5 @@ function initialize(){
 function stopVideo(video){
     video.pause();
     video.currentTime = 0;
+    console.log("video stopped");
 }
