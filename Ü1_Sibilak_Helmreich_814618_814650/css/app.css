@@ -46,7 +46,7 @@ video {
     max-width: inherit;
 }
 
-@media only screen and (max-width: 764px) {
+@media only screen and (max-width: 1024px) {
     aside{
         clear: both;
         min-width: 92%;
