@@ -5,13 +5,12 @@ header {
     background: #f5ff91;
 }
 main {
-    padding: 50px;
-    margin: 50px;
+    padding: 2%;
+    margin: 2%;
     background: #ffed91;
-    max-width: 50%;
+    max-width: 42%;
+    min-width: 42%;
     float: left;
-    display: block;
-    align-content: center;
 }
 
 
@@ -23,8 +22,10 @@ main {
 aside{
     background: #ffce00;
     min-height: 500px;
-    padding: 50px;
-    margin: 50px;
+    max-width: 42%;
+    min-width: 42%;
+    padding: 2%;
+    margin: 2%;
     float: left;
     text-align: center;
     font-size: larger;
@@ -34,3 +35,25 @@ footer {
     clear: both;
     background: #ff9f00;
 }
+
+
+.entity {
+    max-width: 100%;
+    text-align: center;
+}
+
+video {
+    max-width: inherit;
+}
+
+@media only screen and (max-width: 764px) {
+    aside{
+        clear: both;
+        min-width: 92%;
+    }
+    main{
+        min-width: 92%;
+    }
+}
+
+
