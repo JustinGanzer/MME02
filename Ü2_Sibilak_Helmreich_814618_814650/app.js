@@ -6,7 +6,10 @@ var path = require('path');
 
 var app = express();
 
-app.use(express.static(path.join(__dirname, 'static')));
+//To create a virtual path prefix (where the path does not actually exist in
+// the file system) for files that are served by the express.static function,
+// specify a mount path for the static directory, as shown below:
+app.use('/static', express.static('static'));
 
 // add and configure Route /
 app.get('/*', function (req, res) {
