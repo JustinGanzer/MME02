@@ -11,6 +11,14 @@ var app = express();
 // specify a mount path for the static directory, as shown below:
 app.use('/static', express.static('static'));
 
+app.get("/time",function(req,res){
+    res.format({
+        "text/plain":function(){
+            res.send(Date());
+        }
+    });
+});
+
 // add and configure Route /
 app.get('/*', function (req, res) {
     res.send('<!DOCTYPE html>' +
