@@ -3,7 +3,7 @@
  */
 var express = require('express');
 var path = require('path');
-
+var fs = require("fs");
 var app = express();
 
 //To create a virtual path prefix (where the path does not actually exist in
@@ -15,6 +15,18 @@ app.get("/time",function(req,res){
     res.format({
         "text/plain":function(){
             res.send(Date());
+        }
+    });
+});
+
+app.get("/readfile",function(req,res){
+    res.format({
+        "text/plain":function(){
+            fs.readFile("testfile.txt",function(err,content){
+                if(err)
+                    throw err;
+                res.send(content.toString());
+            });
         }
     });
 });
