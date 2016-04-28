@@ -5,6 +5,7 @@ var express = require('express');
 var path = require('path');
 var fs = require("fs");
 var app = express();
+var files = {};
 
 //To create a virtual path prefix (where the path does not actually exist in
 // the file system) for files that are served by the express.static function,
@@ -14,6 +15,7 @@ app.use('/static', express.static('static'));
 app.get("/time",function(req,res){
     res.format({
         "text/plain":function(){
+            console.log("send date");
             res.send(Date());
         }
     });
@@ -22,11 +24,20 @@ app.get("/time",function(req,res){
 app.get("/readfile",function(req,res){
     res.format({
         "text/plain":function(){
-            fs.readFile("testfile.txt",function(err,content){
-                if(err)
-                    throw err;
-                res.send(content.toString());
-            });
+            if(files["testfile"]){
+                console.log("file exists");
+                res.send(files["testfile"].toString());
+            }else{
+                fs.readFile("testfile.txt",function(err,content){
+                    if(err){
+                        throw err;
+                    }
+                    console.log("file doesnt exist in dictioniary, saving");
+                    files["testfile"] = content;   
+                    res.send(content.toString());
+                });
+            }
+            
         }
     });
 });
