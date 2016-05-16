@@ -67,7 +67,8 @@ app.use(function(req, res, next) {
 // Routes ***************************************
 
 app.get('/tweets', function(req,res,next) {
-    res.json(store.select('tweets'));
+    var list = store.select('tweets');
+    res.json([list, {href : req.protocol + '://' + req.get('host') + req.originalUrl}]);
 });
 
 app.post('/tweets', function(req,res,next) {
@@ -76,9 +77,10 @@ app.post('/tweets', function(req,res,next) {
     res.status(201).json(store.select('tweets', id));
 });
 
-
 app.get('/tweets/:id', function(req,res,next) {
-    res.json(store.select('tweets', req.params.id));
+    var list = store.select('tweets', req.params.id);
+    list.href = req.protocol + '://' + req.get('host') + req.originalUrl;
+    res.json(list);
 });
 
 app.delete('/tweets/:id', function(req,res,next) {
@@ -96,15 +98,31 @@ app.put('/tweets/:id', function(req,res,next) {
 
 app.route('/retweets')
     .get(function(req, res) {
-        res.json(store.select('retweets'));
+        var list = store.select('retweets');
+        res.json([list, {href : req.protocol + '://' + req.get('host') + req.originalUrl}]);
+    })
+    .post(function(req, res) {
+        var id = store.insert('retweets', req.body);
+        // set code 201 "created" and send the item back
+        res.status(201).json(store.select('retweets', id));
+    })
+;
+
+app.route('/retweets/:id')
+    .get(function(req, res) {
+        var list = store.select('retweets', req.params.id);
+        list.originalTweet.href = req.protocol + '://' + req.get('host') + "/tweets/"  + list.originalTweet.tweetObject.id;
+        list.href = req.protocol + '://' + req.get('host') + req.originalUrl;
+        res.json(list);
     })
     .put(function(req, res) {
-        res.send('...');
+        store.replace('retweets', req.params.id, req.body);
+        res.status(200).end();
     })
     .delete(function(req, res) {
-        res.send('...');
+        store.remove('retweets', req.params.id);
+        res.status(200).end();
     });
-
 
 // CatchAll for the rest (unfound routes/resources ********
 

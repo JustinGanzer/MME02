@@ -59,7 +59,7 @@ var users = [
 // eigene Resource Collection *****************************************
 var retweets = [
     {   id: globalCounter(),
-        originalTweet: tweets[0],
+        originalTweet: {tweetObject : tweets[0]},
         firstname: "Mobby",
         lastname: "Dick"
     },
@@ -74,7 +74,7 @@ var retweets = [
 var memory = {};
 memory.tweets = tweets;
 memory.users = users;
-memory.retweet = retweets;
+memory.retweets = retweets;
 
 // private helper functions
 var checkElement = function(element) {
