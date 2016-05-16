@@ -94,6 +94,17 @@ app.put('/tweets/:id', function(req,res,next) {
 
 // TODO: add your routes etc.
 
+app.route('/retweets')
+    .get(function(req, res) {
+        res.json(store.select('retweets'));
+    })
+    .put(function(req, res) {
+        res.send('...');
+    })
+    .delete(function(req, res) {
+        res.send('...');
+    });
+
 
 // CatchAll for the rest (unfound routes/resources ********
 

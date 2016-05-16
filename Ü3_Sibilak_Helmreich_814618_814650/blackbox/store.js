@@ -56,11 +56,25 @@ var users = [
         lastname: "Doe"
     }
 ];
+// eigene Resource Collection *****************************************
+var retweets = [
+    {   id: globalCounter(),
+        originalTweet: tweets[0],
+        firstname: "Mobby",
+        lastname: "Dick"
+    },
+    {   id: globalCounter(),
+        originalTweet: tweets[1],
+        firstname: "Swag",
+        lastname: "Boy"
+    }
+];
 
 // our "in memory database" is a simple object!
 var memory = {};
 memory.tweets = tweets;
 memory.users = users;
+memory.retweet = retweets;
 
 // private helper functions
 var checkElement = function(element) {
