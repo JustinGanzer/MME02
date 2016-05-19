@@ -64,7 +64,7 @@ var retweets = [
         lastname: "Dick"
     },
     {   id: globalCounter(),
-        originalTweet: tweets[1],
+        originalTweet: {tweetObject : tweets[1]},
         firstname: "Swag",
         lastname: "Boy"
     }
