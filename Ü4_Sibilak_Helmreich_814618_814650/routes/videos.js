@@ -149,12 +149,12 @@ videos.route("/:id")
                 for(var i=0; i<array.length; i++) {
                     if (array[i] == obj) return true;
                 }
+                return false;
             }
 
             //Checks if all FilterAttributes are in MyAttributes, if no ERROR 9000!
             for(var i=0; i<filterElements.length; i++) {
-                if (include(filterElements[i], myAttributes));
-                else{
+                if (!include(filterElements[i], myAttributes)){
                     var err = new Error('Illegal Attribute');
                     err.status = 400;
                     next(err);
@@ -168,10 +168,7 @@ videos.route("/:id")
 
             //deletes all Attributes if they are not mentioned behind "?filter="
             for(var i=0; i< listOfAttributes.length; i++) {
-                if (include(listOfAttributes[i], filterElements)){
-
-                }
-                else{
+                if (!include(listOfAttributes[i], filterElements)){
                     delete actualJson[listOfAttributes[i]];
                 }
             }
@@ -194,9 +191,6 @@ videos.route("/:id")
             store.replace("videos", req.params.id, req.body);
             res.status(200);
             res.locals.items = store.select("videos", req.params.id);
-            console.log("\n\n\n\n");
-            console.log(req.params.id);
-            console.log("\n\n\n\n");
             next();
         }catch(err){
             err.status = 405; // bad request
@@ -211,9 +205,6 @@ videos.route("/:id")
             res.status(204);
             next();
         }catch(err){
-            console.log("\n\n\n\n");
-            console.log("inside catch");
-            console.log("\n\n\n\n");
             err.status = 404;
             res.status(404);
             next(err);
