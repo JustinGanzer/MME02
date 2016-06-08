@@ -29,6 +29,7 @@ var internalKeys = {id: 'number', timestamp: 'number'};
 videos.route('/')
     .get(function(req, res, next) {
         // TODO
+        res.status(200);
         res.locals.items = store.select("videos");
         next();
     })
@@ -100,7 +101,7 @@ videos.route('/')
     
 // TODO
 
-videos.route("/:videos")
+videos.route("/:id")
     .get(function(req,res,next){
         res.locals.items = store.select("videos", req.params.id);
         next();
@@ -113,11 +114,11 @@ videos.route("/:videos")
     .put(function(req,res,next){ 
         try{        
             store.replace("videos", req.params.id, req.body);
+            res.status(200);
             res.locals.items = store.select("videos", req.params.id);
             console.log("\n\n\n\n");
             console.log(req.params.id);
             console.log("\n\n\n\n");
-            res.status(200);
             next();
         }catch(err){
             err.status = 405; // bad request
