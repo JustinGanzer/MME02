@@ -29,10 +29,40 @@ var internalKeys = {id: 'number', timestamp: 'number'};
 videos.route('/')
     .get(function(req, res, next) {
         // TODO
+
+        var allVideos = store.select("videos");
+
+        //Checks if the offset is present in argument
+        if(req.query.offset !== undefined){
+            var offset = parseInt(req.query.offset);
+
+            if(isNaN(offset) || allVideos.length <= offset || offset < 0){
+                var err = new Error('Illegal Parameter for Offset');
+                err.status = 400;
+                next(err);
+            }
+            else{
+                allVideos.splice(0,offset);
+            }
+        }
+
+        //Checks if the limit is present in argument
+        if(req.query.limit !== undefined){
+            var limit = parseInt(req.query.limit);
+
+            if(isNaN(limit) || allVideos.length <= limit || limit <= 0){
+                var err = new Error('Illegal Parameter for Offset');
+                err.status = 400;
+                next(err);
+            }
+            else{
+                allVideos.splice(limit,allVideos.length);
+            }
+        }
+
+
         res.status(200);
-        res.locals.items = store.select("videos");
-        var filter = req.get('filter');
-        if(filter !== undefined) console.log(filter + "HAHAHAHAHAHHAHAHAHAAHAAHHAAAHAHAAHAHAHAHAHAAAHAA");
+        res.locals.items = allVideos;
         next();
     })
     .post(function(req,res,next) {
