@@ -31,6 +31,8 @@ videos.route('/')
         // TODO
         res.status(200);
         res.locals.items = store.select("videos");
+        var filter = req.get('filter');
+        if(filter !== undefined) console.log(filter + "HAHAHAHAHAHHAHAHAHAAHAAHHAAAHAHAAHAHAHAHAHAAAHAA");
         next();
     })
     .post(function(req,res,next) {
@@ -103,6 +105,52 @@ videos.route('/')
 
 videos.route("/:id")
     .get(function(req,res,next){
+
+
+        //Checks if the filter is present in argument
+        if(req.query.filter !== undefined){
+            //FilterElements = the string that is behind "?filter=" in form of an array
+            //MyAttributes = all Attributes concatenated
+            var filterElements = req.query.filter.split(",");
+            var myAttributes = Object.keys(requiredKeys).concat(Object.keys(internalKeys)).concat(Object.keys(optionalKeys));
+
+            //Help Function that checks if obj is in array. True if yes, undefined if no
+            function include(obj, array) {
+                for(var i=0; i<array.length; i++) {
+                    if (array[i] == obj) return true;
+                }
+            }
+
+            //Checks if all FilterAttributes are in MyAttributes, if no ERROR 9000!
+            for(var i=0; i<filterElements.length; i++) {
+                if (include(filterElements[i], myAttributes));
+                else{
+                    var err = new Error('Illegal Attribute');
+                    err.status = 400;
+                    next(err);
+                }
+            }
+
+            //ActualJson = our response item in progress
+            //ListOfAttrbutes = all Attributes that the normal Response would have
+            var actualJson = store.select("videos", req.params.id);
+            var listOfAttributes =  Object.keys(actualJson);
+
+            //deletes all Attributes if they are not mentioned behind "?filter="
+            for(var i=0; i< listOfAttributes.length; i++) {
+                if (include(listOfAttributes[i], filterElements)){
+
+                }
+                else{
+                    delete actualJson[listOfAttributes[i]];
+                }
+            }
+
+            res.locals.items = actualJson;
+            next();
+
+        }
+
         res.locals.items = store.select("videos", req.params.id);
         next();
     })
