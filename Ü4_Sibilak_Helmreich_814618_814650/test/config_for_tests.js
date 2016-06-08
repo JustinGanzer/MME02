@@ -57,7 +57,7 @@ module.exports.videoCorrect3 = {
 
 module.exports.videoCorrect4 = {
     title: "Let's talk parenting taboos",
-    description: "Babble.com publishers Rufus Griscom and Alisa Volkman, in a lively tag-team, expose 4 facts that parents never, ever admit — and why they should. Funny and honest, for parents and nonparents alike.",
+    description: "Babble.com publishers Rufus Griscom and Alisa Volkman, in a lively tag-team, expose 4 facts that parents never, ever admit â€” and why they should. Funny and honest, for parents and nonparents alike.",
     src: "http://download.ted.com/talks/RufusGriscomandAlisaVolkman_2010W-480p.mp4?apikey=489b859150fc58263f17110eeb44ed5fba4a3b22",
     length: 17*60+1,
     playcount: 1843221,
