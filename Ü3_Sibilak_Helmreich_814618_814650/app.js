@@ -66,6 +66,8 @@ app.use(function(req, res, next) {
 
 // Routes ***************************************
 
+//tweets
+
 app.get('/tweets', function(req,res,next) {
     var list = store.select('tweets');
     res.json([list, {href : req.protocol + '://' + req.get('host') + req.originalUrl}]);
@@ -96,6 +98,8 @@ app.put('/tweets/:id', function(req,res,next) {
 
 // TODO: add your routes etc.
 
+//retweets
+
 app.route('/retweets')
     .get(function(req, res) {
         var list = store.select('retweets');
@@ -113,6 +117,11 @@ app.route('/retweets/:id')
         var list = store.select('retweets', req.params.id);
         list.originalTweet.href = req.protocol + '://' + req.get('host') + "/tweets/"  + list.originalTweet.tweetObject.id;
         list.href = req.protocol + '://' + req.get('host') + req.originalUrl;
+    /*
+    var returnObject = new Object();
+    returnObject.list = list;
+    returnObject.href = href;
+    */
         res.json(list);
     })
     .put(function(req, res) {
@@ -123,6 +132,37 @@ app.route('/retweets/:id')
         store.remove('retweets', req.params.id);
         res.status(200).end();
     });
+
+
+//users
+
+app.route("/users")
+    .get(function(req,res){
+        var list = store.select("users");
+        res.json([list, {href : req.protocol + "://" + req.get("host") + req.originalURL}]);
+    })
+    .post(function(req,res){
+        var id = store.insert("users",req.body);
+        // set code 201 "created" and send the item back
+        res.status(201).json(store.select('users', id));
+    })
+;
+
+app.route('/users/:id')
+    .get(function(req, res) {
+        var list = store.select('users', req.params.id);
+        res.json(list);
+    })
+    .put(function(req, res) {
+        store.replace('users', req.params.id, req.body);
+        res.status(200).end();
+    })
+    .delete(function(req, res) {
+        store.remove('users', req.params.id);
+        res.status(200).end();
+    })
+;
+
 
 // CatchAll for the rest (unfound routes/resources ********
 

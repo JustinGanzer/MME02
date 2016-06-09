@@ -1,6 +1,6 @@
 /** This module defines the routes for videos using the store.js as db memory
  *
- * @author Johannes Konert
+ * @author Johannes Konert, Justin Sibilak, Vincent Helmreich
  * @licence CC BY-SA 4.0
  *
  * @module routes/videos
@@ -49,7 +49,9 @@ videos.route('/')
         //Checks if the limit is present in argument
         if(req.query.limit !== undefined){
             var limit = parseInt(req.query.limit);
-
+            if(limit >= allVideos.length){
+                limit = allVideos.length;
+            }
             if(isNaN(limit) || allVideos.length <= limit || limit <= 0){
                 var err = new Error('Illegal Parameter for Offset');
                 err.status = 400;
@@ -157,7 +159,8 @@ videos.route("/:id")
                 if (!include(filterElements[i], myAttributes)){
                     var err = new Error('Illegal Attribute');
                     err.status = 400;
-                    next(err);
+                    return next(err);
+                    
                 }
             }
 
@@ -174,8 +177,9 @@ videos.route("/:id")
             }
 
             res.locals.items = actualJson;
-            next();
+            
 
+            return next();
         }
 
         res.locals.items = store.select("videos", req.params.id);
