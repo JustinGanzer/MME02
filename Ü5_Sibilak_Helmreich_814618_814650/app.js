@@ -66,6 +66,7 @@ errorResponseWare(app);
 
 // Start server ****************************
 app.listen(3000, function(err) {
+    console.log("listening on port 3000");
     if (err !== undefined) {
         debug('Error on startup, ',err);
     }
