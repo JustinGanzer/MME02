@@ -52,28 +52,109 @@ videos.route('/')
                 
             }
             
-            next(err);
+            //next(err);
             
         });
-    
-        //next();
+
     });
 
-videos.route("/:id")
-    .get(function(req,res,next){
-        
+videos.route('/:id')
+    .get(function(req, res, next){
+        VideoModel.findOne({
+            '_id' : req.params.id
+        }, function (err, video) {
+            res.json(video);
+        })
     })
-    .post(function(req,res,next){
-    
+    .post(function (req, res, next) {
+        var err = new Error("YOU NO POST WITH AN ID! IS BAD! NOT ALLOWED");
+        err.status = 405;
+        next(err);
     })
-    .put(function(req,res,next){
-    
+    .delete(function(req, res, next){
+        VideoModel.findOne({
+            '_id' : req.params.id
+        }, function (err, video) {
+            if(video !== null) {
+                video.remove();
+                res.json(video);
+            }else{
+                var err = new Error("Video witho sucho ido doesno existoo!");
+                err.status = 404;
+                next(err);
+            }
+        })
     })
-    .patch(function(req,res,next){
-    
+    .patch(function (req, res, next) {
+        if (req.params.id == req.body.id) {
+        VideoModel.findByIdAndUpdate(req.params.id, req.body, function (err) {
+            if (err) next(err);
+            res.json({message: 'Success!'});
+        });
+    }else{
+            var err = new Error("Request ID does not match Body ID");
+            err.status = 400;
+            next(err);
+        }
     })
-    .delete(function(req,res,next){
-    
+    .put(function (req, res, next) {
+        VideoModel.findById(req.params.id, function(err, video) {
+            if (!video)
+                next(err);
+            else {
+                if (req.params.id == req.body.id) {
+
+                    var temp = req.body;
+
+                    temp["_id"] = temp["id"];
+                    delete temp["id"];
+
+                    var bodyparams = Object.keys(temp);
+                    console.log(bodyparams);
+                    var schemaparams = Object.keys(VideoModel.schema.paths);
+                    console.log(schemaparams);
+
+                    //Help Function that checks if obj is in array. True if yes, undefined if no
+                    function include(obj, array) {
+                        for(var i=0; i<array.length; i++) {
+                            if (array[i] == obj) return true;
+                        }
+                        return false;
+                    }
+
+                    //Checks if all FilterAttributes are in MyAttributes, if no ERROR 9000!
+                    for(var i=0; i<bodyparams.length; i++) {
+                        if (!include(bodyparams[i], schemaparams)){
+                            var err = new Error('Illegal Attribute');
+                            err.status = 400;
+                            return next(err);
+
+                        }
+                    }
+
+                    video.remove();
+                    video = new VideoModel(req.body);
+                    video.save(function(err){
+                        if(!err){
+                            res.status(201).json(video);
+                        }else{
+                            err.status = 400;
+                            err.message += " in fields: "
+                                + Object.getOwnPropertyNames(err.errors);
+
+                        }
+
+                        //next(err);
+
+                    });
+
+                }else{
+                    var err = new Error("Request ID does not match Body ID");
+                    err.status = 400;
+                    next(err);
+                }
+            }
+        });
     });
 
 // this middleware function can be used, if you like or remove it
