@@ -1,0 +1,68 @@
+/**
+ * Created by Justin on 05-Apr-16.
+ */
+header {
+    background: #f5ff91;
+}
+main {
+    padding: 2%;
+    margin: 2%;
+    background: #ffed91;
+    max-width: 42%;
+    min-width: 42%;
+    float: left;
+}
+
+
+
+.container {
+
+}
+
+aside{
+    background: #ffce00;
+    min-height: 500px;
+    max-width: 42%;
+    min-width: 42%;
+    padding: 2%;
+    margin: 2%;
+    float: left;
+    text-align: center;
+    font-size: larger;
+}
+
+footer {
+    clear: both;
+    background: #ff9f00;
+}
+
+
+.entity {
+    max-width: 100%;
+    text-align: center;
+}
+
+video {
+    max-width: inherit;
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+@media only screen and (max-width: 1024px) {
+    aside{
+        clear: both;
+        min-width: 92%;
+    }
+    main{
+        min-width: 92%;
+    }
+}
+
+
+
+
+
+
